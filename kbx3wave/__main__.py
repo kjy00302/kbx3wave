@@ -41,7 +41,7 @@ def generate_wave(fname, packets, invert=False):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description="\"UNTESTED\" Proof of concept Kingblade X10III tuning wavefile generator")
+        description="Proof of concept KingBlade X10III tuning wavefile generator")
     parser.add_argument('colorfile', help="QR code data from official app")
     parser.add_argument('-o', '--output', help="Write wavefile to OUTPUT")
     parser.add_argument('--invert', action='store_true', help="Invert output signal")
