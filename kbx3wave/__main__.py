@@ -10,15 +10,17 @@ def color_normalization(rgb_tuple):
         return tuple(map(lambda x: round(x / color_sum * 255), rgb_tuple))
     return rgb_tuple
 
-def colors_to_packets(colors, no_normalization=False):
+def colors_to_packets(colors, no_normalization=False, preview=False):
     packets = []
     for n, color_set in enumerate(colors):
         *rgb, w, y = color_set
         if not no_normalization:
             rgb = color_normalization(rgb)
-        packets.append(ruifan_packet.ruifan_memory_packet(n, rgb, w))
-    packets.append(ruifan_packet.ruifan_eof1_packet(len(colors)))
-    packets.append(ruifan_packet.ruifan_eof2_packet(len(colors)))
+        packets.append(ruifan_packet.ruifan_preview_packet(rgb, w) if preview
+            else ruifan_packet.ruifan_memory_packet(n, rgb, w))
+    if not preview:
+        packets.append(ruifan_packet.ruifan_eof1_packet(len(colors)))
+        packets.append(ruifan_packet.ruifan_eof2_packet(len(colors)))
     return packets
 
 def generate_wave(fname, packets, invert=False):
@@ -44,6 +46,7 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--output', help="Write wavefile to OUTPUT")
     parser.add_argument('--invert', action='store_true', help="Invert output signal")
     parser.add_argument('--no-normalization', action='store_true', help="Skip color normalization")
+    parser.add_argument('--preview', action='store_true', help="Generate preview signal")
     args = parser.parse_args()
 
     colors = []
@@ -69,4 +72,4 @@ if __name__ == '__main__':
         exit(1)
 
     generate_wave(f'{args.output if args.output else f"{name}.wav"}',
-        colors_to_packets(colors, args.no_normalization), args.invert)
+        colors_to_packets(colors, args.no_normalization, args.preview), args.invert)

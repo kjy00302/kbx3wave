@@ -13,6 +13,7 @@
                             Write wavefile to OUTPUT
     --invert              Invert output signal
     --no-normalization    Skip color normalization
+    --preview             Generate preview signal
 
 
 ## Usage
