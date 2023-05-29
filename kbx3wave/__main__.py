@@ -1,7 +1,7 @@
 import argparse
 import wave
 import ruifan_packet
-import ruifan_wave
+import irdawave
 
 def color_normalization(rgb_tuple):
     r, g, b = rgb_tuple
@@ -29,13 +29,13 @@ def generate_wave(fname, packets, invert=False):
     wf.setnchannels(2)
     wf.setsampwidth(2)
 
-    ruifan_wave.ruifan_wave_pause(wf)
-    ruifan_wave.ruifan_wave_preamble(wf, invert)
+    irdawave.write_pause(wf)
+    irdawave.write_preamble(wf, invert)
 
     for packet in packets:
         ruifan_packet.ruifan_encode(packet)
-        ruifan_wave.ruifan_wave_encode_packet(wf, packet, invert)
-        ruifan_wave.ruifan_wave_pause(wf)
+        irdawave.write_packet(wf, packet, invert)
+        irdawave.write_pause(wf)
 
     wf.close()
 
