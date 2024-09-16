@@ -4,7 +4,7 @@ import random
 MAGIC = b'&015$2#8)@_!(D^."'
 
 def ruifan_encode(wave_data: bytearray, nonce: int = None):
-    if not nonce:
+    if nonce is None:
         nonce = random.randrange(256)
     for i in range(1, 12):
         wave_data[i] = wave_data[i] ^ nonce ^ MAGIC[i - 1 + nonce % 5]
