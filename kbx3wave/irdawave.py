@@ -5,11 +5,9 @@ FRAME_MIDDLE_16BIT = b'\x00\x00\x00\x00'
 FRAME_LOW_16BIT = b'\xff\x7f\x00\x80'
 
 def _write_bit(wf: wave.Wave_write, b: bool, invert=False):
-    for _ in range(8):
-        wf.writeframesraw(FRAME_HIGH_16BIT if invert else FRAME_LOW_16BIT)
-    for _ in range(6):
+    for _ in range(4):
         wf.writeframesraw(FRAME_LOW_16BIT if b ^ invert else FRAME_HIGH_16BIT)
-    for _ in range(6):
+    for _ in range(16):
         wf.writeframesraw(FRAME_HIGH_16BIT if invert else FRAME_LOW_16BIT)
 
 def write_packet(wf: wave.Wave_write, packet: bytes, invert=False):
